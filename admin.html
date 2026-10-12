@@ -232,51 +232,62 @@ function copyMkt(i){navigator.clipboard.writeText(MKT[i].t).then(()=>{const b=do
 
 /* ---------- flyers ---------- */
 const LOGO=`<svg viewBox="0 0 64 64" style="width:100%;height:100%"><circle cx="32" cy="32" r="31" fill="#3d2f63"/><g stroke="#e0c17a" stroke-width="2.3" stroke-linecap="round"><line x1="32" y1="8" x2="32" y2="16"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="48.5" y1="15.5" x2="43" y2="21"/><line x1="8" y1="32" x2="16" y2="32"/><line x1="48" y1="32" x2="56" y2="32"/></g><circle cx="32" cy="31" r="9.5" fill="#e0c17a"/><path d="M14 44 Q32 34 50 44" stroke="#e0c17a" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>`;
-function flyerShell(inner,bg){return `<div class="flyer" style="background:${bg};color:#fff;padding:90px 80px;display:flex;flex-direction:column">
-  <div style="display:flex;align-items:center;gap:26px">
-    <div style="width:110px;height:110px">${LOGO}</div>
-    <div><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:58px;line-height:1">Light</div>
-    <div style="font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:#e0c17a;margin-top:8px">Mental Health & Wellness</div></div>
-  </div>${inner}
-  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.25);padding-top:40px;font-size:30px">
-    <span>☎ (559) 578‑1814</span><span style="color:#e0c17a">Telehealth · California</span></div></div>`;}
-const PLUM="linear-gradient(150deg,#342856,#3d2f63 45%,#4a3b76)";
-const GOLD="linear-gradient(150deg,#574a8c,#6f61a8)";
+// Bright, high-contrast themes (dark text on light grounds) — readable on screen AND in print.
+const CREAM={bg:"#faf5ec",ink:"#352659",accent:"#9a6a0f",sub:"#574a7e"};
+const LILAC={bg:"linear-gradient(160deg,#f4eefb,#e8dff6)",ink:"#352659",accent:"#8a6210",sub:"#574a7e"};
+const GOLDW={bg:"linear-gradient(150deg,#fcefd1,#f4d897)",ink:"#45310d",accent:"#7a4e0d",sub:"#6a5320"};
+function flyerShell(innerFn,th){return `<div class="flyer" style="background:${th.bg};color:${th.ink};padding:84px 76px;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:24px">
+    <div style="width:108px;height:108px">${LOGO}</div>
+    <div><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:58px;line-height:1;color:${th.ink}">Light</div>
+    <div style="font-size:21px;letter-spacing:.2em;text-transform:uppercase;color:${th.accent};margin-top:8px;font-weight:700">Mental Health &amp; Wellness</div></div>
+  </div>${innerFn(th)}
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:3px solid ${th.accent};padding-top:34px;font-size:31px;font-weight:600;color:${th.ink}">
+    <span>☎ (559) 578‑1814</span><span style="color:${th.accent}">Telehealth · California</span></div></div>`;}
 const FLYERS=[
-  {name:"welcome",bg:PLUM,inner:`<div style="margin:70px 0 0"><div style="font-size:30px;letter-spacing:.28em;text-transform:uppercase;color:#e0c17a">Now Accepting New Clients</div>
-    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:96px;line-height:1.05;margin:24px 0">Find your light.</div>
-    <div style="font-size:40px;line-height:1.5;color:#d8cfee;max-width:16em">Compassionate psychiatric care & medication management, by telehealth across California.</div>
-    <div style="margin-top:56px;font-family:'Cormorant Garamond';font-style:italic;font-size:46px;color:#fff">Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC</div></div>`},
-  {name:"book-today",bg:GOLD,inner:`<div style="margin:80px 0 0;text-align:center">
+  {name:"welcome",th:CREAM,inner:(t)=>`<div style="margin:60px 0 0"><div style="font-size:30px;letter-spacing:.26em;text-transform:uppercase;color:${t.accent};font-weight:700">Now Accepting New Clients</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:102px;line-height:1.03;margin:22px 0;color:${t.ink}">Find your light.</div>
+    <div style="font-size:42px;line-height:1.5;color:${t.sub};max-width:17em">Compassionate psychiatric care &amp; medication management, by telehealth across California.</div>
+    <div style="margin-top:50px;font-family:'Cormorant Garamond';font-style:italic;font-size:48px;color:${t.ink}">Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC</div></div>`},
+  {name:"book-today",th:GOLDW,inner:(t)=>`<div style="margin:66px 0 0;text-align:center">
     <div style="font-size:120px">🌅</div>
-    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:92px;margin:20px 0">Take the first step</div>
-    <div style="font-size:42px;color:#efe6ff;line-height:1.5;max-width:18em;margin:0 auto">Booking is simple & confidential.<br>You don't have to do this alone.</div>
-    <div style="display:inline-block;margin-top:56px;background:linear-gradient(135deg,#e0c17a,#c19a44);color:#3a2d12;font-weight:600;font-size:44px;padding:28px 60px;border-radius:999px">Book an Appointment</div></div>`},
-  {name:"specialties",bg:PLUM,inner:`<div style="margin:64px 0 0"><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:80px;margin-bottom:40px">How I can help</div>
-    <div style="font-size:42px;line-height:2.1;color:#e9e2f6">
-    ✦ Anxiety & Depression<br>✦ Medication Management<br>✦ ADHD — Adults & Teens<br>✦ Trauma & PTSD<br>✦ Mood & Bipolar Disorder<br>✦ Sleep & Emotional Regulation</div></div>`},
-  {name:"quote",bg:GOLD,inner:`<div style="margin:auto 0"><div style="font-family:'Cormorant Garamond';font-size:180px;color:rgba(224,193,122,.4);line-height:.5">“</div>
-    <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:62px;line-height:1.4;color:#fff">The best client relationships are built on trust, honesty, and clear communication.</div>
-    <div style="font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#efe6ff;margin-top:48px">— Ifeoma A. Ubadike, PMHNP‑C</div></div>`},
-  {name:"you-matter",bg:PLUM,inner:`<div style="margin:auto 0;text-align:center"><div style="font-size:130px">💜</div>
-    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:100px;margin:24px 0">You matter.</div>
-    <div style="font-size:44px;color:#d8cfee;line-height:1.5;max-width:17em;margin:0 auto">Your mental health deserves expert, compassionate care. We're here when you're ready.</div></div>`},
-  {name:"telehealth",bg:GOLD,inner:`<div style="margin:70px 0 0"><div style="font-size:30px;letter-spacing:.28em;text-transform:uppercase;color:#efe6ff">From the comfort of home</div>
-    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:92px;line-height:1.05;margin:24px 0">Telehealth<br>psychiatry,<br>statewide.</div>
-    <div style="font-size:40px;color:#fff;line-height:1.5;max-width:16em">Private, secure video visits anywhere in California. No commute — just care.</div></div>`}
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:98px;margin:16px 0;color:${t.ink}">Take the first step</div>
+    <div style="font-size:44px;color:${t.sub};line-height:1.5;max-width:18em;margin:0 auto">Booking is simple &amp; confidential.<br>You don't have to do this alone.</div>
+    <div style="display:inline-block;margin-top:52px;background:#3d2f63;color:#fff;font-weight:600;font-size:46px;padding:28px 64px;border-radius:999px">Book an Appointment</div></div>`},
+  {name:"specialties",th:LILAC,inner:(t)=>`<div style="margin:54px 0 0"><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:86px;margin-bottom:36px;color:${t.ink}">How I can help</div>
+    <div style="font-size:45px;line-height:1.95;color:${t.ink};font-weight:500">
+    <span style="color:${t.accent}">✦</span> Anxiety &amp; Depression<br><span style="color:${t.accent}">✦</span> Medication Management<br><span style="color:${t.accent}">✦</span> ADHD — Adults &amp; Teens<br><span style="color:${t.accent}">✦</span> Trauma &amp; PTSD<br><span style="color:${t.accent}">✦</span> Mood &amp; Bipolar Disorder<br><span style="color:${t.accent}">✦</span> Sleep &amp; Emotional Regulation</div></div>`},
+  {name:"quote",th:CREAM,inner:(t)=>`<div style="margin:auto 0"><div style="font-family:'Cormorant Garamond';font-size:190px;color:${t.accent};opacity:.42;line-height:.5">“</div>
+    <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:66px;line-height:1.38;color:${t.ink}">The best client relationships are built on trust, honesty, and clear communication.</div>
+    <div style="font-size:34px;letter-spacing:.12em;text-transform:uppercase;color:${t.accent};margin-top:46px;font-weight:700">— Ifeoma A. Ubadike, PMHNP‑C</div></div>`},
+  {name:"you-matter",th:LILAC,inner:(t)=>`<div style="margin:auto 0;text-align:center"><div style="font-size:132px">💜</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:108px;margin:22px 0;color:${t.ink}">You matter.</div>
+    <div style="font-size:46px;color:${t.sub};line-height:1.5;max-width:17em;margin:0 auto">Your mental health deserves expert, compassionate care. We're here when you're ready.</div></div>`},
+  {name:"telehealth",th:GOLDW,inner:(t)=>`<div style="margin:58px 0 0"><div style="font-size:30px;letter-spacing:.26em;text-transform:uppercase;color:${t.accent};font-weight:700">From the comfort of home</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:98px;line-height:1.03;margin:22px 0;color:${t.ink}">Telehealth<br>psychiatry,<br>statewide.</div>
+    <div style="font-size:43px;color:${t.sub};line-height:1.5;max-width:16em">Private, secure video visits anywhere in California. No commute — just care.</div></div>`}
 ];
 function renderFlyers(){document.getElementById("flyerGrid").innerHTML=FLYERS.map((f,i)=>`
-  <div class="flyer-wrap"><div class="flyer-scale">${flyerShell(f.inner,f.bg)}</div>
-  <div class="fl-btns"><button onclick="dlFlyer(${i})">⬇ Download</button><button onclick="shareFlyer(${i})">↗ Share</button></div></div>`).join("");}
-function buildFull(i){const s=document.getElementById("flyerStage");s.innerHTML=`<div id="fullFlyer" style="width:1080px;height:1350px">${flyerShell(FLYERS[i].inner,FLYERS[i].bg).replace('class="flyer"','class="flyer" style="transform:none;"')}</div>`;
-  // re-apply non-scaled flyer style
+  <div class="flyer-wrap"><div class="flyer-scale">${flyerShell(f.inner,f.th)}</div>
+  <div class="fl-btns"><button onclick="printFlyer(${i})">🖨 Print</button><button onclick="dlFlyer(${i})">⬇ Download</button><button onclick="shareFlyer(${i})">↗ Share</button></div></div>`).join("");}
+function buildFull(i){const s=document.getElementById("flyerStage");s.innerHTML=`<div id="fullFlyer" style="width:1080px;height:1350px">${flyerShell(FLYERS[i].inner,FLYERS[i].th)}</div>`;
   const el=s.querySelector(".flyer");el.style.transform="none";el.style.width="1080px";el.style.height="1350px";return el;}
-async function dlFlyer(i){const el=buildFull(i);const canvas=await html2canvas(el,{width:1080,height:1350,scale:1,backgroundColor:null});
+// scale:2 => 2160×2700 render — crisp on screen and sharp in print.
+async function renderCanvas(i){const el=buildFull(i);return await html2canvas(el,{width:1080,height:1350,scale:2,backgroundColor:"#ffffff",useCORS:true});}
+async function dlFlyer(i){const canvas=await renderCanvas(i);
   const a=document.createElement("a");a.download=`light-flyer-${FLYERS[i].name}.png`;a.href=canvas.toDataURL("image/png");a.click();}
-async function shareFlyer(i){const el=buildFull(i);const canvas=await html2canvas(el,{width:1080,height:1350,scale:1,backgroundColor:null});
+async function shareFlyer(i){const canvas=await renderCanvas(i);
   canvas.toBlob(async(blob)=>{const file=new File([blob],`light-flyer-${FLYERS[i].name}.png`,{type:"image/png"});
     if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:"Light Mental Health & Wellness"});}catch(e){}}
     else{const a=document.createElement("a");a.download=file.name;a.href=canvas.toDataURL();a.click();}});}
+async function printFlyer(i){const canvas=await renderCanvas(i);const data=canvas.toDataURL("image/png");
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups for this site to print the flyer.");return;}
+  w.document.write('<!doctype html><html><head><title>Light flyer — '+FLYERS[i].name+'</title>'+
+    '<style>@page{size:auto;margin:10mm}html,body{margin:0;padding:0;background:#fff}'+
+    'img{display:block;width:100%;max-width:180mm;margin:0 auto}</style></head>'+
+    '<body><img src="'+data+'" onload="setTimeout(function(){window.focus();window.print();},200)"></body></html>');
+  w.document.close();}
 
 /* ---------- bookings ---------- */
 function getBookings(){try{return JSON.parse(localStorage.getItem("light_bookings")||"[]");}catch(e){return[];}}
