@@ -268,9 +268,14 @@
         <button class="btn btn-gold" onclick="openBooking()">Book an Appointment</button>
         <a class="btn btn-ghost" id="heroCall" href="tel:+15595781814">Call (559) 578‑1814</a>
       </div>
-      <a class="pt-badge" id="ptBadge" href="https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081" target="_blank" rel="noopener">
-        ✦ Verified by <b>Psychology Today</b> &nbsp;·&nbsp; View profile →
-      </a>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="pt-badge" id="ptBadge" href="https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081" target="_blank" rel="noopener">
+          ✦ Verified by <b>Psychology Today</b> &nbsp;·&nbsp; View profile →
+        </a>
+        <a class="pt-badge" id="zocBadge" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener">
+          🗓 Book on <b>Zocdoc</b> →
+        </a>
+      </div>
     </div>
     <div class="hero-photo">
       <div class="halo"></div>
@@ -421,6 +426,7 @@
         <a id="footCall" href="tel:+15595781814">☎ (559) 578‑1814</a>
         <a id="footEmail" href="mailto:lightmentalhealthwellnesscare@gmail.com">✉ lightmentalhealthwellnesscare@gmail.com</a>
         <a href="#" onclick="openBooking();return false">✦ Book an appointment</a>
+        <a id="footZoc" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener">🗓 Book on Zocdoc</a>
         <a id="footPT" href="https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081" target="_blank" rel="noopener">Psychology Today profile</a>
       </div>
     </div>
@@ -453,7 +459,8 @@
         </div>
         <div class="field" id="insField" style="display:none"><label>Insurance (optional)</label><input name="insurance" placeholder="Insurer & member ID if known"></div>
         <button class="btn btn-gold" type="submit">Request Appointment</button>
-        <p class="pay-note" style="text-align:center;margin-top:14px">By booking you agree to be contacted about your request. Not for emergencies — call 988 or 911.</p>
+        <p class="pay-note" style="text-align:center;margin-top:14px">Prefer to book instantly? <a id="zocInline" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener" style="color:var(--plum);font-weight:600">Book on Zocdoc →</a></p>
+        <p class="pay-note" style="text-align:center;margin-top:6px">By booking you agree to be contacted about your request. Not for emergencies — call 988 or 911.</p>
       </form>
     </div>
   </div>
@@ -494,6 +501,7 @@ const DEFAULTS = {
   email:"lightmentalhealthwellnesscare@gmail.com",
   providerEmail:"iaubadike@gmail.com",
   ptLink:"https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081",
+  zocdocLink:"https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386",
   paymentLink:"",        // Stripe/Square payment link (admin sets)
   bookingEndpoint:""     // FormSubmit/Web3Forms endpoint (admin sets)
 };
@@ -510,6 +518,7 @@ function applyCfg(){
   });
   const fe=document.getElementById("footEmail"); if(fe){fe.href="mailto:"+CFG.email; fe.textContent="✉ "+CFG.email;}
   [["ptBadge"],["footPT"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.ptLink) el.href=CFG.ptLink;});
+  [["zocBadge"],["footZoc"],["zocInline"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.zocdocLink) el.href=CFG.zocdocLink;});
   document.getElementById("yr").textContent=new Date().getFullYear();
 }
 
