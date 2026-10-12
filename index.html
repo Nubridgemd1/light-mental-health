@@ -37,6 +37,15 @@
   .btn-ghost:hover{background:rgba(255,255,255,.12)}
   .btn-plum{background:var(--plum);color:#fff}
   .btn-plum:hover{background:var(--plum2);transform:translateY(-2px)}
+  /* fancy Book an Appointment CTA */
+  .btn-book{position:relative;overflow:hidden;background:linear-gradient(135deg,#e7cd8a,#c19a44 60%,#a87f32);color:#2e220a;font-weight:600;font-size:15.5px;padding:16px 32px;box-shadow:0 12px 30px rgba(193,154,68,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+  .btn-book svg{width:18px;height:18px;stroke:#2e220a;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .btn-book:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(193,154,68,.58),inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn-book::after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+  @keyframes shine{0%{left:-130%}55%{left:170%}100%{left:170%}}
+  .msg-link{font-family:"Jost";font-size:13px;color:#d8cfee;margin-top:14px;display:inline-block;border-bottom:1px dotted rgba(216,207,238,.5);cursor:pointer}
+  .msg-link:hover{color:#fff}
+  @media(prefers-reduced-motion:reduce){.btn-book::after{display:none}}
 
   /* ---------- NAV ---------- */
   header.nav{position:sticky;top:0;z-index:60;background:rgba(248,245,239,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
@@ -248,7 +257,7 @@
     </nav>
     <div class="nav-cta">
       <a class="nav-call" id="navCall" href="tel:+15595781814">☎ (559) 578‑1814</a>
-      <button class="btn btn-gold" onclick="openBooking()">Book Now</button>
+      <a class="btn btn-book" id="navBook" href="https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620" target="_blank" rel="noopener">Book Now</a>
       <button class="burger" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('show')"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -265,15 +274,19 @@
       <div class="role">Board‑Certified Psychiatric Mental Health Nurse Practitioner</div>
       <p class="lede">Warm, judgment‑free mental health care and expert medication management — delivered by telehealth across California. Your healing begins with being truly heard.</p>
       <div class="hero-cta">
-        <button class="btn btn-gold" onclick="openBooking()">Book an Appointment</button>
+        <a class="btn btn-book" id="heroBook" href="https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+          Book an Appointment
+        </a>
         <a class="btn btn-ghost" id="heroCall" href="tel:+15595781814">Call (559) 578‑1814</a>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div><span class="msg-link" onclick="openBooking()">Prefer to send a message instead? Request here →</span></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
         <a class="pt-badge" id="ptBadge" href="https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081" target="_blank" rel="noopener">
           ✦ Verified by <b>Psychology Today</b> &nbsp;·&nbsp; View profile →
         </a>
         <a class="pt-badge" id="zocBadge" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener">
-          🗓 Book on <b>Zocdoc</b> →
+          ✦ Verified on <b>Zocdoc</b> &nbsp;·&nbsp; View profile →
         </a>
       </div>
     </div>
@@ -390,7 +403,10 @@
     <h2>Take the first step today</h2>
     <p>Booking is simple and confidential. Let's find the right support for you.</p>
     <div class="hero-cta">
-      <button class="btn btn-gold" onclick="openBooking()">Book an Appointment</button>
+      <a class="btn btn-book" id="bandBook" href="https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+        Book an Appointment
+      </a>
       <a class="btn btn-ghost" id="bandCall" href="tel:+15595781814">Call (559) 578‑1814</a>
     </div>
   </div>
@@ -425,8 +441,9 @@
         <h4>Get in touch</h4>
         <a id="footCall" href="tel:+15595781814">☎ (559) 578‑1814</a>
         <a id="footEmail" href="mailto:lightmentalhealthwellnesscare@gmail.com">✉ lightmentalhealthwellnesscare@gmail.com</a>
-        <a href="#" onclick="openBooking();return false">✦ Book an appointment</a>
-        <a id="footZoc" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener">🗓 Book on Zocdoc</a>
+        <a id="footBook" href="https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620" target="_blank" rel="noopener">🗓 Book an appointment</a>
+        <a href="#" onclick="openBooking();return false">✉ Send a message / request</a>
+        <a id="footZoc" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener">Zocdoc profile</a>
         <a id="footPT" href="https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081" target="_blank" rel="noopener">Psychology Today profile</a>
       </div>
     </div>
@@ -442,8 +459,8 @@
   <div class="modal-card">
     <div class="modal-head">
       <button class="modal-x" onclick="closeBooking()">×</button>
-      <h3>Book an Appointment</h3>
-      <p>Confidential. We'll reply within one business day.</p>
+      <h3>Send a Message</h3>
+      <p>Not ready to book on Zocdoc? Send a request and we'll reply within one business day.</p>
     </div>
     <div class="modal-body">
       <form id="bookForm" onsubmit="return submitBooking(event)">
@@ -458,9 +475,9 @@
           <button type="button" id="pt-ins" onclick="setPay('insurance')">🛡 Insurance</button>
         </div>
         <div class="field" id="insField" style="display:none"><label>Insurance (optional)</label><input name="insurance" placeholder="Insurer & member ID if known"></div>
-        <button class="btn btn-gold" type="submit">Request Appointment</button>
-        <p class="pay-note" style="text-align:center;margin-top:14px">Prefer to book instantly? <a id="zocInline" href="https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386" target="_blank" rel="noopener" style="color:var(--plum);font-weight:600">Book on Zocdoc →</a></p>
-        <p class="pay-note" style="text-align:center;margin-top:6px">By booking you agree to be contacted about your request. Not for emergencies — call 988 or 911.</p>
+        <button class="btn btn-gold" type="submit">Send Request</button>
+        <p class="pay-note" style="text-align:center;margin-top:14px">Prefer instant self‑scheduling? <a href="https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620" target="_blank" rel="noopener" style="color:var(--plum);font-weight:600">Book an appointment →</a></p>
+        <p class="pay-note" style="text-align:center;margin-top:6px">By submitting you agree to be contacted about your request. Not for emergencies — call 988 or 911.</p>
       </form>
     </div>
   </div>
@@ -501,7 +518,8 @@ const DEFAULTS = {
   email:"lightmentalhealthwellnesscare@gmail.com",
   providerEmail:"iaubadike@gmail.com",
   ptLink:"https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081",
-  zocdocLink:"https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386",
+  zocdocLink:"https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386",            // profile (badge only — no booking)
+  bookingLink:"https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620", // Zocdoc Booking Link — the Book an Appointment CTA
   paymentLink:"",        // Stripe/Square payment link (admin sets)
   bookingEndpoint:""     // FormSubmit/Web3Forms endpoint (admin sets)
 };
@@ -518,7 +536,8 @@ function applyCfg(){
   });
   const fe=document.getElementById("footEmail"); if(fe){fe.href="mailto:"+CFG.email; fe.textContent="✉ "+CFG.email;}
   [["ptBadge"],["footPT"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.ptLink) el.href=CFG.ptLink;});
-  [["zocBadge"],["footZoc"],["zocInline"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.zocdocLink) el.href=CFG.zocdocLink;});
+  [["zocBadge"],["footZoc"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.zocdocLink) el.href=CFG.zocdocLink;});
+  [["navBook"],["heroBook"],["bandBook"],["footBook"]].forEach(([id])=>{const el=document.getElementById(id); if(el&&CFG.bookingLink) el.href=CFG.bookingLink;});
   document.getElementById("yr").textContent=new Date().getFullYear();
 }
 

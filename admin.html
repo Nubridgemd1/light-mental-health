@@ -103,7 +103,8 @@
       <label>Public email</label><input id="f-email">
       <label>Provider email (private / alternate)</label><input id="f-providerEmail">
       <label>Psychology Today profile link</label><input id="f-ptLink">
-      <label>Zocdoc profile link</label><input id="f-zocdocLink">
+      <label>Zocdoc profile link (badge — verification only, no booking)</label><input id="f-zocdocLink">
+      <label>Zocdoc booking link (powers the “Book an Appointment” button)</label><input id="f-bookingLink">
       <button class="save" onclick="saveCfg()">Save changes</button>
       <span id="cfgMsg" class="ok" style="margin-left:14px"></span>
     </div>
@@ -189,12 +190,14 @@ const DEFAULTS={provider:"Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC",shortName:"Ife
   phone:"(559) 578‑1814",tel:"+15595781814",email:"lightmentalhealthwellnesscare@gmail.com",
   providerEmail:"iaubadike@gmail.com",ptLink:"https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081",
   zocdocLink:"https://www.zocdoc.com/doctor/ifeoma-ubadike-pmhnp-bc-964386",
+  bookingLink:"https://www.zocdoc.com/booking-link/practice/light-mental-health-and-wellness-192620",
   paymentLink:"",bookingEndpoint:"",bio1:"",bio2:""};
 function loadCfg(){let c=Object.assign({},DEFAULTS);try{c=Object.assign(c,JSON.parse(localStorage.getItem("light_cfg")||"{}"));}catch(e){}
   document.getElementById("f-provider").value=c.provider;document.getElementById("f-shortName").value=c.shortName;
   document.getElementById("f-phone").value=c.phone;document.getElementById("f-email").value=c.email;
   document.getElementById("f-providerEmail").value=c.providerEmail;document.getElementById("f-ptLink").value=c.ptLink;
   document.getElementById("f-zocdocLink").value=c.zocdocLink||"";
+  document.getElementById("f-bookingLink").value=c.bookingLink||"";
   document.getElementById("f-paymentLink").value=c.paymentLink||"";document.getElementById("f-bookingEndpoint").value=c.bookingEndpoint||"";
   document.getElementById("f-bio1").value=c.bio1||"";document.getElementById("f-bio2").value=c.bio2||"";}
 function saveCfg(){const phone=document.getElementById("f-phone").value.trim();
@@ -203,6 +206,7 @@ function saveCfg(){const phone=document.getElementById("f-phone").value.trim();
     phone:phone,tel:tel,email:document.getElementById("f-email").value.trim(),
     providerEmail:document.getElementById("f-providerEmail").value.trim(),ptLink:document.getElementById("f-ptLink").value.trim(),
     zocdocLink:document.getElementById("f-zocdocLink").value.trim(),
+    bookingLink:document.getElementById("f-bookingLink").value.trim(),
     paymentLink:document.getElementById("f-paymentLink").value.trim(),bookingEndpoint:document.getElementById("f-bookingEndpoint").value.trim(),
     bio1:document.getElementById("f-bio1").value.trim(),bio2:document.getElementById("f-bio2").value.trim()};
   localStorage.setItem("light_cfg",JSON.stringify(c));
