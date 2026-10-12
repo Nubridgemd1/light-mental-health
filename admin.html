@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Light · Provider Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{--plum:#3d2f63;--plum2:#574a8c;--gold:#c19a44;--gold2:#e0c17a;--lilac:#efeaf8;--lilac2:#e3dbf4;--cream:#f8f5ef;--ink:#2a2340;--body:#4a4463;--muted:#8a82a4;--line:#e4ddf0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--lilac);color:var(--body);font-family:"Jost",system-ui,sans-serif;font-size:15px}
+  h1,h2,h3{font-family:"Cormorant Garamond",serif;color:var(--ink);margin:0}
+  /* gate */
+  #gate{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(150deg,#342856,#4a3b76);z-index:50}
+  .gate-card{background:var(--cream);border-radius:22px;padding:40px 38px;width:min(390px,92vw);text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+  .gate-card .mark{width:58px;height:58px;margin:0 auto 14px}
+  .gate-card h2{font-size:26px;margin-bottom:4px}
+  .gate-card p{color:var(--muted);font-size:13.5px;margin:0 0 20px}
+  .gate-card input{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;font-family:"Jost";font-size:16px;text-align:center;letter-spacing:.1em}
+  .gate-card button{margin-top:14px;width:100%;padding:13px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#3a2d12;font-family:"Jost";font-weight:500;font-size:15px;cursor:pointer}
+  .err{color:#b4423a;font-size:13px;margin-top:10px;min-height:16px}
+  /* shell */
+  .top{background:var(--plum);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+  .top .brand{display:flex;align-items:center;gap:12px}
+  .top .brand .b1{font-family:"Cormorant Garamond";font-weight:700;font-size:20px}
+  .top .brand .b2{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2)}
+  .top a.view{color:#fff;font-size:13px;opacity:.85;text-decoration:none;border:1px solid rgba(255,255,255,.4);padding:8px 16px;border-radius:999px}
+  .tabs{display:flex;gap:6px;background:#fff;padding:8px 12px;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:60px;z-index:15}
+  .tabs button{border:0;background:transparent;font-family:"Jost";font-size:14px;color:var(--muted);padding:10px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .tabs button.active{background:var(--lilac);color:var(--plum);font-weight:500}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+  .panel{display:none}.panel.active{display:block}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 26px;margin-bottom:20px;box-shadow:0 10px 30px rgba(61,47,99,.05)}
+  .card h3{font-size:22px;margin-bottom:4px}
+  .card .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  label{display:block;font-size:13px;color:var(--plum);font-weight:500;margin:14px 0 6px}
+  input,textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font-family:"Jost";font-size:15px;background:#fff;color:var(--ink)}
+  textarea{min-height:88px;resize:vertical}
+  .save{margin-top:20px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#3a2d12;border:0;padding:13px 28px;border-radius:999px;font-family:"Jost";font-weight:500;font-size:15px;cursor:pointer}
+  .save.plum{background:var(--plum);color:#fff}
+  .note{font-size:12.5px;color:var(--muted);margin-top:10px}
+  .ok{color:#2e7d57;font-weight:500}
+  .copybox{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;position:relative}
+  .copybox .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:8px}
+  .copybox pre{white-space:pre-wrap;font-family:"Jost";font-size:14px;color:var(--body);margin:0;line-height:1.6}
+  .copybox button{position:absolute;top:12px;right:12px;background:var(--plum);color:#fff;border:0;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:"Jost"}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .btnrow button{border:1px solid var(--line);background:#fff;color:var(--plum);padding:10px 18px;border-radius:999px;cursor:pointer;font-family:"Jost";font-size:13.5px}
+  /* flyers */
+  .flyer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+  .flyer-wrap{text-align:center}
+  .flyer-scale{width:220px;height:275px;overflow:hidden;border-radius:12px;box-shadow:0 10px 30px rgba(61,47,99,.18);margin:0 auto}
+  .flyer{width:1080px;height:1350px;transform:scale(.2037);transform-origin:top left;position:relative;overflow:hidden;font-family:"Jost"}
+  .fl-btns{margin-top:10px;display:flex;gap:8px;justify-content:center}
+  .fl-btns button{border:1px solid var(--line);background:#fff;color:var(--plum);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:12.5px;font-family:"Jost"}
+  #flyerStage{position:fixed;left:-99999px;top:0}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-card">
+    <svg class="mark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="#3d2f63"/>
+      <g stroke="#e0c17a" stroke-width="2.3" stroke-linecap="round"><line x1="32" y1="8" x2="32" y2="16"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="48.5" y1="15.5" x2="43" y2="21"/><line x1="8" y1="32" x2="16" y2="32"/><line x1="48" y1="32" x2="56" y2="32"/></g>
+      <circle cx="32" cy="31" r="9.5" fill="#e0c17a"/><path d="M14 44 Q32 34 50 44" stroke="#e0c17a" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>
+    <h2>Provider Console</h2>
+    <p>Light Mental Health &amp; Wellness Care</p>
+    <input id="pass" type="password" placeholder="Enter passcode" onkeydown="if(event.key==='Enter')unlock()">
+    <button onclick="unlock()">Unlock</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div class="top">
+  <div class="brand"><div><div class="b1">Light</div><div class="b2">Provider Console</div></div></div>
+  <a class="view" href="index.html" target="_blank">View site ↗</a>
+</div>
+<div class="tabs">
+  <button class="active" onclick="tab('update',this)">Update Site</button>
+  <button onclick="tab('marketing',this)">Marketing Kit</button>
+  <button onclick="tab('flyers',this)">Flyers</button>
+  <button onclick="tab('bookings',this)">Bookings</button>
+  <button onclick="tab('settings',this)">Settings</button>
+</div>
+
+<div class="wrap">
+  <!-- UPDATE -->
+  <div class="panel active" id="p-update">
+    <div class="card">
+      <h3>Provider & Contact</h3>
+      <p class="sub">These update the live website instantly (saved in this browser).</p>
+      <label>Provider name & credentials</label><input id="f-provider">
+      <label>Short name (photo caption)</label><input id="f-shortName">
+      <label>Phone</label><input id="f-phone" placeholder="(559) 578-1814">
+      <label>Public email</label><input id="f-email">
+      <label>Provider email (private / alternate)</label><input id="f-providerEmail">
+      <label>Psychology Today profile link</label><input id="f-ptLink">
+      <button class="save" onclick="saveCfg()">Save changes</button>
+      <span id="cfgMsg" class="ok" style="margin-left:14px"></span>
+    </div>
+    <div class="card">
+      <h3>About / Bio</h3>
+      <p class="sub">The two paragraphs shown in the “Meet your provider” section.</p>
+      <label>Bio — paragraph 1</label><textarea id="f-bio1"></textarea>
+      <label>Bio — paragraph 2</label><textarea id="f-bio2"></textarea>
+      <button class="save" onclick="saveCfg()">Save bio</button>
+    </div>
+    <div class="card">
+      <h3>Payments & Bookings</h3>
+      <p class="sub">Paste these to actually collect money and receive booking emails.</p>
+      <label>Payment link (Stripe / Square) — opens after a self‑pay booking</label>
+      <input id="f-paymentLink" placeholder="https://buy.stripe.com/...  or  https://square.link/...">
+      <label>Booking endpoint (FormSubmit / Web3Forms) — emails you each request</label>
+      <input id="f-bookingEndpoint" placeholder="https://formsubmit.co/ajax/lightmentalhealthwellnesscare@gmail.com">
+      <button class="save" onclick="saveCfg()">Save</button>
+      <p class="note">Tip: for FormSubmit, use <b>https://formsubmit.co/ajax/lightmentalhealthwellnesscare@gmail.com</b> (confirm the email once). Without an endpoint, bookings still save under the Bookings tab.</p>
+    </div>
+  </div>
+
+  <!-- MARKETING -->
+  <div class="panel" id="p-marketing">
+    <div class="card">
+      <h3>Marketing Kit</h3>
+      <p class="sub">Ready‑to‑post copy. Tap Copy and paste anywhere.</p>
+      <div id="mkt"></div>
+    </div>
+  </div>
+
+  <!-- FLYERS -->
+  <div class="panel" id="p-flyers">
+    <div class="card">
+      <h3>Shareable Flyers</h3>
+      <p class="sub">On‑brand 1080×1350 graphics for Instagram / Facebook. Download or share.</p>
+      <div class="flyer-grid" id="flyerGrid"></div>
+    </div>
+  </div>
+
+  <!-- BOOKINGS -->
+  <div class="panel" id="p-bookings">
+    <div class="card">
+      <h3>Booking Requests</h3>
+      <p class="sub">Requests submitted on the site (saved in this browser).</p>
+      <div style="overflow-x:auto"><table id="bkTable"><thead><tr><th>When</th><th>Name</th><th>Contact</th><th>Concern</th><th>Pay</th></tr></thead><tbody></tbody></table></div>
+      <div class="btnrow"><button onclick="exportCSV()">⬇ Export CSV</button><button onclick="clearBookings()">Clear all</button></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="p-settings">
+    <div class="card">
+      <h3>Change Passcode</h3>
+      <p class="sub">Protects this console on this device.</p>
+      <label>New passcode</label><input id="f-newpass" type="text">
+      <button class="save plum" onclick="changePass()">Update passcode</button>
+      <span id="passMsg" class="ok" style="margin-left:14px"></span>
+      <p class="note">Default is <b>light2026</b>. Passcode and all content live in this browser's local storage (mock pattern).</p>
+    </div>
+  </div>
+</div>
+
+<div id="flyerStage"></div>
+
+<script>
+/* ---------- auth ---------- */
+const DEFPASS="light2026";
+function getPass(){return localStorage.getItem("light_pass")||DEFPASS;}
+function unlock(){const v=document.getElementById("pass").value;
+  if(v===getPass()){document.getElementById("gate").style.display="none";sessionStorage.setItem("light_auth","1");}
+  else{document.getElementById("gateErr").textContent="Incorrect passcode.";}}
+if(sessionStorage.getItem("light_auth")==="1")document.getElementById("gate").style.display="none";
+
+/* ---------- tabs ---------- */
+function tab(name,btn){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("p-"+name).classList.add("active");
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+  if(name==="bookings")renderBookings();if(name==="flyers")renderFlyers();}
+
+/* ---------- config ---------- */
+const DEFAULTS={provider:"Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC",shortName:"Ifeoma A. Ubadike, PMHNP‑C",
+  phone:"(559) 578‑1814",tel:"+15595781814",email:"lightmentalhealthwellnesscare@gmail.com",
+  providerEmail:"iaubadike@gmail.com",ptLink:"https://www.psychologytoday.com/us/psychiatrists/headway-clovis-ca/1738081",
+  paymentLink:"",bookingEndpoint:"",bio1:"",bio2:""};
+function loadCfg(){let c=Object.assign({},DEFAULTS);try{c=Object.assign(c,JSON.parse(localStorage.getItem("light_cfg")||"{}"));}catch(e){}
+  document.getElementById("f-provider").value=c.provider;document.getElementById("f-shortName").value=c.shortName;
+  document.getElementById("f-phone").value=c.phone;document.getElementById("f-email").value=c.email;
+  document.getElementById("f-providerEmail").value=c.providerEmail;document.getElementById("f-ptLink").value=c.ptLink;
+  document.getElementById("f-paymentLink").value=c.paymentLink||"";document.getElementById("f-bookingEndpoint").value=c.bookingEndpoint||"";
+  document.getElementById("f-bio1").value=c.bio1||"";document.getElementById("f-bio2").value=c.bio2||"";}
+function saveCfg(){const phone=document.getElementById("f-phone").value.trim();
+  const tel="+1"+phone.replace(/\D/g,"").replace(/^1/,"");
+  const c={provider:document.getElementById("f-provider").value.trim(),shortName:document.getElementById("f-shortName").value.trim(),
+    phone:phone,tel:tel,email:document.getElementById("f-email").value.trim(),
+    providerEmail:document.getElementById("f-providerEmail").value.trim(),ptLink:document.getElementById("f-ptLink").value.trim(),
+    paymentLink:document.getElementById("f-paymentLink").value.trim(),bookingEndpoint:document.getElementById("f-bookingEndpoint").value.trim(),
+    bio1:document.getElementById("f-bio1").value.trim(),bio2:document.getElementById("f-bio2").value.trim()};
+  localStorage.setItem("light_cfg",JSON.stringify(c));
+  document.getElementById("cfgMsg").textContent="✓ Saved — refresh the site to see it.";
+  setTimeout(()=>document.getElementById("cfgMsg").textContent="",3500);}
+loadCfg();
+
+/* ---------- settings ---------- */
+function changePass(){const v=document.getElementById("f-newpass").value.trim();if(!v)return;
+  localStorage.setItem("light_pass",v);document.getElementById("passMsg").textContent="✓ Passcode updated.";
+  setTimeout(()=>document.getElementById("passMsg").textContent="",3000);}
+
+/* ---------- marketing ---------- */
+const MKT=[
+  {l:"Instagram / Facebook caption",t:"✨ You don't have to carry it all alone. ✨\n\nCompassionate psychiatric care & medication management with Ifeoma A. Ubadike, PMHNP‑C — now welcoming new clients across California by telehealth. 💜\n\nTrust. Honesty. Clear communication. That's where healing begins.\n\n📅 Book today — link in bio\n☎ (559) 578‑1814\n#MentalHealth #Telepsychiatry #CaliforniaTherapy #MedicationManagement #YouMatter"},
+  {l:"Instagram story (short)",t:"Feeling anxious, low, or stuck? 💜\nYou deserve support.\n\nTelehealth psychiatric care across California with Ifeoma Ubadike, PMHNP‑C.\n\n👆 Tap to book"},
+  {l:"Welcome email",t:"Subject: Compassionate psychiatric care — now accepting new clients\n\nHi there,\n\nTaking the first step toward mental wellness takes courage, and I'm honored you're considering it. I'm Ifeoma Ubadike, a board‑certified Psychiatric Mental Health Nurse Practitioner offering confidential telehealth care across California.\n\nWhether you're navigating anxiety, depression, ADHD, trauma, or simply feeling overwhelmed, we'll work together on a plan that fits your life — built on trust, honesty, and clear communication.\n\nBook your appointment: [your booking link]\nQuestions? Call (559) 578‑1814.\n\nWarmly,\nIfeoma A. Ubadike, PMHNP‑C, FNP‑BC\nLight Mental Health & Wellness Care"},
+  {l:"Text / SMS",t:"Hi! This is Light Mental Health & Wellness Care. We have telehealth appointments open with Ifeoma Ubadike, PMHNP‑C. Book here: [link] or call (559) 578‑1814. 💜"},
+  {l:"Referral note (for other providers)",t:"Now accepting psychiatric referrals across California 🌅\n\nIfeoma A. Ubadike, PMHNP‑C, FNP‑BC provides telehealth psychiatric evaluation & medication management for adults and adolescents — anxiety, depression, ADHD, mood disorders, trauma & more.\n\nRefer a patient: (559) 578‑1814 · lightmentalhealthwellnesscare@gmail.com"}
+];
+document.getElementById("mkt").innerHTML=MKT.map((m,i)=>`<div class="copybox"><div class="lab">${m.l}</div><button onclick="copyMkt(${i})">Copy</button><pre id="mkt${i}">${m.t.replace(/</g,"&lt;")}</pre></div>`).join("");
+function copyMkt(i){navigator.clipboard.writeText(MKT[i].t).then(()=>{const b=document.querySelectorAll('.copybox button')[i];const o=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=o,1600);});}
+
+/* ---------- flyers ---------- */
+const LOGO=`<svg viewBox="0 0 64 64" style="width:100%;height:100%"><circle cx="32" cy="32" r="31" fill="#3d2f63"/><g stroke="#e0c17a" stroke-width="2.3" stroke-linecap="round"><line x1="32" y1="8" x2="32" y2="16"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="48.5" y1="15.5" x2="43" y2="21"/><line x1="8" y1="32" x2="16" y2="32"/><line x1="48" y1="32" x2="56" y2="32"/></g><circle cx="32" cy="31" r="9.5" fill="#e0c17a"/><path d="M14 44 Q32 34 50 44" stroke="#e0c17a" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>`;
+function flyerShell(inner,bg){return `<div class="flyer" style="background:${bg};color:#fff;padding:90px 80px;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:26px">
+    <div style="width:110px;height:110px">${LOGO}</div>
+    <div><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:58px;line-height:1">Light</div>
+    <div style="font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:#e0c17a;margin-top:8px">Mental Health & Wellness</div></div>
+  </div>${inner}
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.25);padding-top:40px;font-size:30px">
+    <span>☎ (559) 578‑1814</span><span style="color:#e0c17a">Telehealth · California</span></div></div>`;}
+const PLUM="linear-gradient(150deg,#342856,#3d2f63 45%,#4a3b76)";
+const GOLD="linear-gradient(150deg,#574a8c,#6f61a8)";
+const FLYERS=[
+  {name:"welcome",bg:PLUM,inner:`<div style="margin:70px 0 0"><div style="font-size:30px;letter-spacing:.28em;text-transform:uppercase;color:#e0c17a">Now Accepting New Clients</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:96px;line-height:1.05;margin:24px 0">Find your light.</div>
+    <div style="font-size:40px;line-height:1.5;color:#d8cfee;max-width:16em">Compassionate psychiatric care & medication management, by telehealth across California.</div>
+    <div style="margin-top:56px;font-family:'Cormorant Garamond';font-style:italic;font-size:46px;color:#fff">Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC</div></div>`},
+  {name:"book-today",bg:GOLD,inner:`<div style="margin:80px 0 0;text-align:center">
+    <div style="font-size:120px">🌅</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:92px;margin:20px 0">Take the first step</div>
+    <div style="font-size:42px;color:#efe6ff;line-height:1.5;max-width:18em;margin:0 auto">Booking is simple & confidential.<br>You don't have to do this alone.</div>
+    <div style="display:inline-block;margin-top:56px;background:linear-gradient(135deg,#e0c17a,#c19a44);color:#3a2d12;font-weight:600;font-size:44px;padding:28px 60px;border-radius:999px">Book an Appointment</div></div>`},
+  {name:"specialties",bg:PLUM,inner:`<div style="margin:64px 0 0"><div style="font-family:'Cormorant Garamond';font-weight:700;font-size:80px;margin-bottom:40px">How I can help</div>
+    <div style="font-size:42px;line-height:2.1;color:#e9e2f6">
+    ✦ Anxiety & Depression<br>✦ Medication Management<br>✦ ADHD — Adults & Teens<br>✦ Trauma & PTSD<br>✦ Mood & Bipolar Disorder<br>✦ Sleep & Emotional Regulation</div></div>`},
+  {name:"quote",bg:GOLD,inner:`<div style="margin:auto 0"><div style="font-family:'Cormorant Garamond';font-size:180px;color:rgba(224,193,122,.4);line-height:.5">“</div>
+    <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:62px;line-height:1.4;color:#fff">The best client relationships are built on trust, honesty, and clear communication.</div>
+    <div style="font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:#efe6ff;margin-top:48px">— Ifeoma A. Ubadike, PMHNP‑C</div></div>`},
+  {name:"you-matter",bg:PLUM,inner:`<div style="margin:auto 0;text-align:center"><div style="font-size:130px">💜</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:100px;margin:24px 0">You matter.</div>
+    <div style="font-size:44px;color:#d8cfee;line-height:1.5;max-width:17em;margin:0 auto">Your mental health deserves expert, compassionate care. We're here when you're ready.</div></div>`},
+  {name:"telehealth",bg:GOLD,inner:`<div style="margin:70px 0 0"><div style="font-size:30px;letter-spacing:.28em;text-transform:uppercase;color:#efe6ff">From the comfort of home</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:92px;line-height:1.05;margin:24px 0">Telehealth<br>psychiatry,<br>statewide.</div>
+    <div style="font-size:40px;color:#fff;line-height:1.5;max-width:16em">Private, secure video visits anywhere in California. No commute — just care.</div></div>`}
+];
+function renderFlyers(){document.getElementById("flyerGrid").innerHTML=FLYERS.map((f,i)=>`
+  <div class="flyer-wrap"><div class="flyer-scale">${flyerShell(f.inner,f.bg)}</div>
+  <div class="fl-btns"><button onclick="dlFlyer(${i})">⬇ Download</button><button onclick="shareFlyer(${i})">↗ Share</button></div></div>`).join("");}
+function buildFull(i){const s=document.getElementById("flyerStage");s.innerHTML=`<div id="fullFlyer" style="width:1080px;height:1350px">${flyerShell(FLYERS[i].inner,FLYERS[i].bg).replace('class="flyer"','class="flyer" style="transform:none;"')}</div>`;
+  // re-apply non-scaled flyer style
+  const el=s.querySelector(".flyer");el.style.transform="none";el.style.width="1080px";el.style.height="1350px";return el;}
+async function dlFlyer(i){const el=buildFull(i);const canvas=await html2canvas(el,{width:1080,height:1350,scale:1,backgroundColor:null});
+  const a=document.createElement("a");a.download=`light-flyer-${FLYERS[i].name}.png`;a.href=canvas.toDataURL("image/png");a.click();}
+async function shareFlyer(i){const el=buildFull(i);const canvas=await html2canvas(el,{width:1080,height:1350,scale:1,backgroundColor:null});
+  canvas.toBlob(async(blob)=>{const file=new File([blob],`light-flyer-${FLYERS[i].name}.png`,{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:"Light Mental Health & Wellness"});}catch(e){}}
+    else{const a=document.createElement("a");a.download=file.name;a.href=canvas.toDataURL();a.click();}});}
+
+/* ---------- bookings ---------- */
+function getBookings(){try{return JSON.parse(localStorage.getItem("light_bookings")||"[]");}catch(e){return[];}}
+function renderBookings(){const arr=getBookings().slice().reverse();const tb=document.querySelector("#bkTable tbody");
+  if(!arr.length){tb.innerHTML=`<tr><td colspan="5" style="color:var(--muted);padding:24px 10px">No booking requests yet.</td></tr>`;return;}
+  tb.innerHTML=arr.map(b=>`<tr><td>${b.when?new Date(b.when).toLocaleString():""}</td><td>${esc(b.name)}</td>
+    <td>${esc(b.email||"")}<br>${esc(b.phone||"")}</td><td>${esc(b.concern||"")}${b.preferred?"<br><i>Pref: "+esc(b.preferred)+"</i>":""}</td>
+    <td>${b.payMode==="insurance"?"Insurance"+(b.insurance?"<br>"+esc(b.insurance):""):"Self‑pay"}</td></tr>`).join("");}
+function esc(s){return String(s||"").replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));}
+function exportCSV(){const arr=getBookings();if(!arr.length)return;
+  const cols=["when","name","email","phone","concern","preferred","payMode","insurance"];
+  const csv=[cols.join(",")].concat(arr.map(b=>cols.map(c=>`"${String(b[c]||"").replace(/"/g,'""')}"`).join(","))).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="light-bookings.csv";a.click();}
+function clearBookings(){if(confirm("Delete all booking requests on this device?")){localStorage.removeItem("light_bookings");renderBookings();}}
+</script>
+</body>
+</html>
