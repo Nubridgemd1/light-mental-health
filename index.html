@@ -16,7 +16,7 @@
 <style>
   :root{
     --plum:#3d2f63; --plum2:#574a8c; --plum3:#6f61a8;
-    --gold:#c19a44; --gold2:#e0c17a; --goldsoft:#efe2bf;
+    --gold:#c19a44; --gold2:#e0c17a; --goldsoft:#efe2bf; --gold3:#866523;
     --lilac:#efeaf8; --lilac2:#e3dbf4; --cream:#f8f5ef; --cream2:#fbf9f4;
     --apricot:#e8a86a; --ink:#2a2340; --body:#4a4463; --muted:#8a82a4; --line:#e4ddf0;
     --maxw:1120px;
@@ -55,7 +55,7 @@
   .brand .mark{width:44px;height:44px;flex:none}
   .brand .txt{display:flex;flex-direction:column;line-height:1}
   .brand .txt .b1{font-family:"Cormorant Garamond";font-weight:700;font-size:20px;color:var(--plum);letter-spacing:.01em}
-  .brand .txt .b2{font-family:"Jost";font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+  .brand .txt .b2{font-family:"Jost";font-weight:600;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold3);margin-top:4px}
   nav.links{display:flex;align-items:center;gap:30px}
   nav.links a{font-family:"Jost";font-weight:400;font-size:14.5px;color:var(--ink);position:relative}
   nav.links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1.5px;background:var(--gold);transition:.25s}
@@ -80,7 +80,7 @@
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .pt-badge{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:9px 16px;border:1px solid rgba(224,193,122,.5);border-radius:999px;background:rgba(255,255,255,.06);color:#efe6ff;font-family:"Jost";font-size:12.5px;letter-spacing:.04em}
   .pt-badge b{color:var(--gold2);font-weight:500}
-  .hero-photo{position:relative;justify-self:center}
+  .hero-photo{position:relative;justify-self:end}
   .hero-photo .frame{position:relative;width:min(360px,80vw);aspect-ratio:4/5;border-radius:220px 220px 26px 26px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 30px 70px rgba(20,12,46,.5)}
   .hero-photo .frame img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
   .hero-photo .halo{position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,114,.4),transparent 68%);z-index:-1;filter:blur(8px)}
@@ -90,7 +90,7 @@
   /* ---------- SECTION ---------- */
   section{padding:84px 0;scroll-margin-top:86px}
   .sec-head{text-align:center;max-width:640px;margin:0 auto 52px}
-  .sec-head .script{font-size:30px;color:var(--gold);display:block;margin-bottom:2px}
+  .sec-head .script{font-size:30px;color:var(--gold3);display:block;margin-bottom:2px}
   .sec-head h2{font-size:clamp(30px,4.2vw,44px)}
   .sec-head p{color:var(--muted);margin-top:14px}
 
@@ -98,7 +98,7 @@
   .about{background:var(--cream2)}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
   .about-txt h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:8px}
-  .about-txt .script{font-size:26px;color:var(--gold)}
+  .about-txt .script{font-size:26px;color:var(--gold3)}
   .about-txt p{margin:16px 0}
   .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
   .chip{font-family:"Jost";font-size:12.5px;color:var(--plum2);background:var(--lilac);border:1px solid var(--lilac2);border-radius:999px;padding:7px 15px}
@@ -223,7 +223,7 @@
     .hero-in,.about-grid,.pay-grid{grid-template-columns:1fr}
     .hero-in{padding:52px 0 60px;text-align:center}
     .hero-cta,.pt-badge{justify-content:center}
-    .hero-photo{order:-1}
+    .hero-photo{order:-1;justify-self:center}
     .svc-grid,.post-grid{grid-template-columns:1fr 1fr}
     nav.links,.nav-call{display:none}
     .burger{display:flex}
