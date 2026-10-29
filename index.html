@@ -55,7 +55,7 @@
   .brand .mark{width:44px;height:44px;flex:none}
   .brand .txt{display:flex;flex-direction:column;line-height:1}
   .brand .txt .b1{font-family:"Cormorant Garamond";font-weight:700;font-size:20px;color:var(--plum);letter-spacing:.01em}
-  .brand .txt .b2{font-family:"Jost";font-weight:600;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold3);margin-top:4px}
+  .brand .txt .b2{font-family:"Jost";font-weight:700;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);margin-top:4px}
   nav.links{display:flex;align-items:center;gap:30px}
   nav.links a{font-family:"Jost";font-weight:400;font-size:14.5px;color:var(--ink);position:relative}
   nav.links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1.5px;background:var(--gold);transition:.25s}
@@ -148,8 +148,31 @@
   .pay-list{list-style:none;padding:0;margin:16px 0 0}
   .pay-list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:15px}
   .pay-list li:last-child{border-bottom:0}
-  .pay-list .v{margin-left:auto;font-family:"Cormorant Garamond";font-weight:700;font-size:22px;color:var(--plum)}
+  .pay-list .v{margin-left:auto;font-family:"Cormorant Garamond";font-weight:700;font-size:22px;color:var(--plum);white-space:nowrap}
+  .pay-list .v .was{font-size:15px;color:var(--muted);text-decoration:line-through;margin-right:8px;font-weight:500}
+  .pay-list .save{display:inline-block;margin-left:10px;font-family:"Jost";font-size:10.5px;font-weight:600;letter-spacing:.04em;color:#7a4e0d;background:linear-gradient(135deg,var(--gold2),var(--goldsoft));border-radius:999px;padding:2px 9px;vertical-align:middle}
   .pay-note{font-size:13px;color:var(--muted);margin-top:16px}
+
+  /* Offers & Events */
+  .offers{background:linear-gradient(180deg,var(--cream),var(--lilac))}
+  .oe-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+  .oe-col h3.oe-h{font-family:"Cormorant Garamond";font-size:26px;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .oe-col h3.oe-h .em{font-size:22px}
+  .promo{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--plum),var(--plum2));color:#fff;border-radius:20px;padding:24px 26px;margin-bottom:16px;box-shadow:0 16px 38px rgba(61,47,99,.22)}
+  .promo::before{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(224,193,122,.5),transparent 70%)}
+  .promo h4{color:#fff;font-size:23px;margin-bottom:6px}
+  .promo p{color:#e9e2f6;font-size:14.5px;margin:0}
+  .promo .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+  .promo .code{font-family:"Jost";font-weight:600;font-size:13px;letter-spacing:.08em;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#3a2d12;border-radius:8px;padding:6px 14px}
+  .promo .exp{font-size:12.5px;color:var(--gold2)}
+  .event{display:flex;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:0 10px 26px rgba(61,47,99,.06)}
+  .event .date{flex:none;width:62px;text-align:center;background:linear-gradient(135deg,var(--lilac),var(--lilac2));border-radius:12px;padding:10px 6px;align-self:flex-start}
+  .event .date .mo{font-family:"Jost";font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--plum2)}
+  .event .date .dy{font-family:"Cormorant Garamond";font-weight:700;font-size:28px;color:var(--plum);line-height:1}
+  .event .ev-b h4{font-size:20px;margin-bottom:3px}
+  .event .ev-b p{font-size:13.5px;color:var(--muted);margin:0}
+  .event .ev-b .when{font-size:12.5px;color:var(--gold3);font-weight:500;margin-top:4px}
+  .oe-empty{color:var(--muted);font-size:14px;font-style:italic}
 
   /* Journal */
   .journal{background:var(--cream2)}
@@ -220,7 +243,7 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
 
   @media(max-width:900px){
-    .hero-in,.about-grid,.pay-grid{grid-template-columns:1fr}
+    .hero-in,.about-grid,.pay-grid,.oe-grid{grid-template-columns:1fr}
     .hero-in{padding:52px 0 60px;text-align:center}
     .hero-cta,.pt-badge{justify-content:center}
     .hero-photo{order:-1;justify-self:center}
@@ -263,6 +286,7 @@
       <a href="#about">About</a>
       <a href="#services">Services</a>
       <a href="#specialties">Specialties</a>
+      <a href="#offers" id="navOffers" style="display:none">Offers</a>
       <a href="#journal">Journal</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -365,6 +389,27 @@
   </div>
 </section>
 
+<!-- ============ OFFERS & EVENTS ============ -->
+<section class="offers" id="offers" style="display:none">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="script">What's happening</span>
+      <h2>Offers &amp; Events</h2>
+      <p>Current promotions and upcoming community events from the practice.</p>
+    </div>
+    <div class="oe-grid">
+      <div class="oe-col" id="promoCol">
+        <h3 class="oe-h"><span class="em">🎁</span> Promotional Offers</h3>
+        <div id="promoList"></div>
+      </div>
+      <div class="oe-col" id="eventCol">
+        <h3 class="oe-h"><span class="em">📅</span> Upcoming Events</h3>
+        <div id="eventList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ INSURANCE & PAYMENT ============ -->
 <section id="contact">
   <div class="wrap">
@@ -376,10 +421,7 @@
     <div class="pay-grid">
       <div class="pay-card">
         <h3><span class="dot"><svg viewBox="0 0 24 24"><path d="M3 10h18M3 10l2-5h14l2 5M5 10v9h14v-9"/></svg></span>Self‑Pay Rates</h3>
-        <ul class="pay-list">
-          <li>Initial psychiatric evaluation <span class="v">$150</span></li>
-          <li>Follow‑up / medication visit <span class="v">$100</span></li>
-        </ul>
+        <ul class="pay-list" id="payList"></ul>
         <p class="pay-note">Major debit/credit cards and HSA/FSA welcome. Transparent pricing — no surprises.</p>
       </div>
       <div class="pay-card">
@@ -570,6 +612,7 @@ function applyCfg(){
   document.getElementById("heroCreds").textContent = CFG.provider;
   document.getElementById("heroTag").textContent = CFG.shortName;
   document.getElementById("heroPhoto").alt = CFG.provider;
+  if(CFG.heroPhoto) document.getElementById("heroPhoto").src = CFG.heroPhoto;
   [["navCall"],["heroCall"],["bandCall"],["footCall"]].forEach(([id])=>{
     const el=document.getElementById(id); if(el){el.href="tel:"+CFG.tel; if(id!=="navCall") el.textContent="Call "+CFG.phone; else el.textContent="☎ "+CFG.phone;}
   });
@@ -580,8 +623,9 @@ function applyCfg(){
   document.getElementById("yr").textContent=new Date().getFullYear();
 }
 
-/* ---------- SERVICES ---------- */
-const SERVICES = [
+/* ---------- SERVICES (admin-editable via CFG.services) ---------- */
+const DEF_ICON='<path d="M12 21C7 17 3 13 3 8.5A4.5 4.5 0 0112 6a4.5 4.5 0 019 2.5C21 13 17 17 12 21z"/>';
+const DEFAULT_SERVICES = [
   {t:"Psychiatric Evaluation", d:"A thorough, unhurried assessment to understand your history, symptoms, and goals — the foundation of a care plan built around you.",
    ic:'<path d="M9 11l3 3 8-8M3 7v10a2 2 0 002 2h10"/>'},
   {t:"Medication Management", d:"Evidence‑based prescribing and careful ongoing adjustment, with clear explanations of how and why each medication helps.",
@@ -593,34 +637,92 @@ const SERVICES = [
   {t:"Trauma & PTSD", d:"A safe, paced approach to trauma and PTSD that honors your experience and supports your nervous system's return to safety.",
    ic:'<path d="M12 3l7 4v5c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/>'},
   {t:"Sleep & Wellness", d:"Help for insomnia, emotional regulation, and overall wellbeing — restoring rest and resilience so you can thrive.",
-   ic:'<path d="M21 12.8A8 8 0 1111 3a6 6 0 0010 9.8z"/>'}
+   ic:'<path d="M21 12.8A8 8 0 1111 3a6 6 0 0010 9.8z"/>'},
+  {t:"Weight Loss Management", d:"Supportive, medically guided weight management — thoughtful evaluation, evidence‑based options, and ongoing care that respects your whole health.",
+   ic:'<circle cx="12" cy="13" r="8"/><path d="M12 13V9M12 5.5V3M9 3h6"/>'}
 ];
-document.getElementById("svcGrid").innerHTML = SERVICES.map(s=>`
-  <div class="svc"><div class="ic"><svg viewBox="0 0 24 24">${s.ic}</svg></div>
-  <h3>${s.t}</h3><p>${s.d}</p></div>`).join("");
+function esc(s){return String(s==null?"":s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));}
+function renderServices(){
+  const list=(CFG.services&&CFG.services.length)?CFG.services:DEFAULT_SERVICES;
+  document.getElementById("svcGrid").innerHTML = list.map(s=>`
+  <div class="svc"><div class="ic"><svg viewBox="0 0 24 24">${s.ic||DEF_ICON}</svg></div>
+  <h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join("");
+}
 
-/* ---------- SPECIALTIES (from Psychology Today profile) ---------- */
-const TOP = ["Narcissistic Abuse","Medication Management","Eating Disorders"];
-const MORE = ["ADHD","Anxiety","Bipolar Disorder","Depression","OCD","Trauma & PTSD","Sleep / Insomnia","Chronic Pain","Autism","Alcohol Use","Emotional Regulation","Stress Management"];
-document.getElementById("specGrid").innerHTML =
-  TOP.map(s=>`<span class="top">★ ${s}</span>`).join("") + MORE.map(s=>`<span>${s}</span>`).join("");
+/* ---------- SPECIALTIES (admin-editable; all starred by default) ---------- */
+const DEFAULT_SPECS = [
+  "Narcissistic Abuse","Medication Management","Eating Disorders","ADHD","Anxiety",
+  "Bipolar Disorder","Depression","OCD","Trauma & PTSD","Sleep / Insomnia",
+  "Chronic Pain","Autism","Alcohol Use","Emotional Regulation","Stress Management",
+  "Weight Loss Management"
+].map(name=>({name,star:true}));
+function renderSpecs(){
+  const list=(CFG.specs&&CFG.specs.length)?CFG.specs:DEFAULT_SPECS;
+  document.getElementById("specGrid").innerHTML = list.map(s=>
+    s.star?`<span class="top">★ ${esc(s.name)}</span>`:`<span>${esc(s.name)}</span>`).join("");
+}
 
-/* ---------- SPECIALTIES PHOTO REEL ---------- */
-const REEL = [
-  {img:"assets/reel/calm.jpg",   cap:"Mindfulness &amp; calm"},
+/* ---------- SELF-PAY PRICES (admin-editable, with optional discounts) ---------- */
+const DEFAULT_PRICES = [
+  {label:"Initial psychiatric evaluation", amount:150, discount:0},
+  {label:"Follow‑up / medication visit", amount:100, discount:0}
+];
+function renderPrices(){
+  const list=(CFG.prices&&CFG.prices.length)?CFG.prices:DEFAULT_PRICES;
+  document.getElementById("payList").innerHTML = list.map(p=>{
+    const d=Number(p.discount)||0, amt=Number(p.amount)||0;
+    const net = d>0 ? Math.round(amt*(1-d/100)) : amt;
+    const val = d>0
+      ? `<span class="v"><span class="was">$${amt}</span>$${net}<span class="save">Save ${d}%</span></span>`
+      : `<span class="v">$${amt}</span>`;
+    return `<li>${esc(p.label)} ${val}</li>`;
+  }).join("");
+}
+
+/* ---------- SPECIALTIES PHOTO REEL (admin-editable images) ---------- */
+const DEFAULT_REEL = [
+  {img:"assets/reel/calm.jpg",   cap:"Mindfulness & calm"},
   {img:"assets/reel/talk.jpg",   cap:"A listening ear"},
   {img:"assets/reel/nature.jpg", cap:"Reconnecting with nature"},
-  {img:"assets/reel/sunrise.jpg",cap:"Hope &amp; new beginnings"},
-  {img:"assets/reel/hands.jpg",  cap:"Support &amp; connection"},
-  {img:"assets/reel/journal.jpg",cap:"Reflection &amp; journaling"},
-  {img:"assets/reel/yoga.jpg",   cap:"Movement &amp; balance"},
-  {img:"assets/reel/peace.jpg",  cap:"Community &amp; belonging"},
+  {img:"assets/reel/sunrise.jpg",cap:"Hope & new beginnings"},
+  {img:"assets/reel/hands.jpg",  cap:"Support & connection"},
+  {img:"assets/reel/journal.jpg",cap:"Reflection & journaling"},
+  {img:"assets/reel/yoga.jpg",   cap:"Movement & balance"},
+  {img:"assets/reel/peace.jpg",  cap:"Community & belonging"},
   {img:"assets/reel/woman.jpg",  cap:"Quiet moments of peace"}
 ];
-(function(){
+function renderReel(){
+  const REEL=(CFG.reel&&CFG.reel.length)?CFG.reel:DEFAULT_REEL;
   const track=document.getElementById("reelTrack");
-  const tile=r=>`<figure class="reel-tile"><img src="${r.img}" alt="" loading="lazy"><figcaption class="cap">${r.cap}</figcaption></figure>`;
+  const tile=r=>`<figure class="reel-tile"><img src="${esc(r.img)}" alt="" loading="lazy"><figcaption class="cap">${esc(r.cap)}</figcaption></figure>`;
   track.innerHTML = REEL.map(tile).join("") + REEL.map(tile).join(""); // duplicate for seamless loop
+}
+
+/* ---------- OFFERS & EVENTS (admin-editable) ---------- */
+function monthAbbr(d){return ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][d.getMonth()]||"";}
+function renderOffers(){
+  const promos=(CFG.promos||[]).filter(p=>p&&p.title);
+  const events=(CFG.events||[]).filter(e=>e&&e.title);
+  const sec=document.getElementById("offers");
+  const navO=document.getElementById("navOffers");
+  if(!promos.length && !events.length){ sec.style.display="none"; if(navO) navO.style.display="none"; return; }
+  sec.style.display=""; if(navO) navO.style.display="";
+  document.getElementById("promoCol").style.display = promos.length?"":"none";
+  document.getElementById("eventCol").style.display = events.length?"":"none";
+  document.getElementById("promoList").innerHTML = promos.map(p=>`
+    <div class="promo"><h4>${esc(p.title)}</h4>${p.body?`<p>${esc(p.body)}</p>`:""}
+    <div class="meta">${p.code?`<span class="code">Code: ${esc(p.code)}</span>`:""}${p.expires?`<span class="exp">Ends ${esc(p.expires)}</span>`:""}</div></div>`).join("");
+  document.getElementById("eventList").innerHTML = events.map(e=>{
+    let mo="",dy="";const dt=e.date?new Date(e.date):null;
+    if(dt&&!isNaN(dt)){mo=monthAbbr(dt);dy=dt.getDate();}
+    return `<div class="event"><div class="date"><div class="mo">${mo||"&nbsp;"}</div><div class="dy">${dy||"•"}</div></div>
+    <div class="ev-b"><h4>${esc(e.title)}</h4>${e.desc?`<p>${esc(e.desc)}</p>`:""}${e.when?`<div class="when">${esc(e.when)}</div>`:""}</div></div>`;
+  }).join("");
+}
+
+(function(){
+  renderServices();renderSpecs();renderPrices();renderReel();renderOffers();
+  const track=document.getElementById("reelTrack");
   const reduce = window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let paused=false;
   track.addEventListener("mouseenter",()=>paused=true);

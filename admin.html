@@ -25,8 +25,9 @@
   /* shell */
   .top{background:var(--plum);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
   .top .brand{display:flex;align-items:center;gap:12px}
-  .top .brand .b1{font-family:"Cormorant Garamond";font-weight:700;font-size:20px}
-  .top .brand .b2{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2)}
+  .top .brand .b1{font-family:"Cormorant Garamond";font-weight:700;font-size:23px;letter-spacing:.01em}
+  .top .brand .b1 span{color:var(--gold2)}
+  .top .brand .b2{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);font-weight:600}
   .top a.view{color:#fff;font-size:13px;opacity:.85;text-decoration:none;border:1px solid rgba(255,255,255,.4);padding:8px 16px;border-radius:999px}
   .tabs{display:flex;gap:6px;background:#fff;padding:8px 12px;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:60px;z-index:15}
   .tabs button{border:0;background:transparent;font-family:"Jost";font-size:14px;color:var(--muted);padding:10px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
@@ -52,6 +53,26 @@
   th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
   .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .btnrow button{border:1px solid var(--line);background:#fff;color:var(--plum);padding:10px 18px;border-radius:999px;cursor:pointer;font-family:"Jost";font-size:13.5px}
+  /* list editors */
+  .ed{border:1px solid var(--line);border-radius:14px;padding:14px 14px 6px;margin-bottom:14px;background:var(--cream)}
+  .ed-grid{display:grid;gap:8px 10px}
+  .ed .r2{grid-template-columns:1fr 1fr}.ed .r3{grid-template-columns:1.3fr 1fr auto}.ed .rfull{grid-template-columns:1fr}
+  .ed label{margin:0 0 3px}
+  .ed input,.ed textarea{padding:9px 11px;font-size:14px}
+  .ed textarea{min-height:60px}
+  .ed .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .ed .top-row .lab{font-family:"Cormorant Garamond";font-size:17px;color:var(--plum);font-weight:700}
+  .del{border:1px solid #e7c9c6;background:#fff;color:#b4423a;border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;font-family:"Jost"}
+  .addbtn{border:1px dashed var(--plum2);background:#fff;color:var(--plum);border-radius:10px;padding:10px 16px;font-size:13.5px;cursor:pointer;font-family:"Jost";margin-bottom:14px}
+  .starchk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--plum);white-space:nowrap}
+  .starchk input{width:auto;margin:0}
+  .thumb{width:72px;height:92px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#fff;flex:none}
+  .thumb.head{width:80px;height:80px;border-radius:50%}
+  .mrow{display:flex;gap:12px;align-items:center}
+  .mrow .grow{flex:1}
+  .filebtn{display:inline-block;font-size:12.5px;color:var(--plum);background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;font-family:"Jost"}
+  .filebtn input{display:none}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:4px}
   /* flyers */
   .flyer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
   .flyer-wrap{text-align:center}
@@ -80,11 +101,15 @@
 
 <!-- SHELL -->
 <div class="top">
-  <div class="brand"><div><div class="b1">Light</div><div class="b2">Provider Console</div></div></div>
+  <div class="brand"><div><div class="b1">Light <span>Mental Health &amp; Wellness</span></div><div class="b2">Provider Console</div></div></div>
   <a class="view" href="index.html" target="_blank">View site ↗</a>
 </div>
 <div class="tabs">
   <button class="active" onclick="tab('update',this)">Update Site</button>
+  <button onclick="tab('services',this)">Services &amp; Prices</button>
+  <button onclick="tab('specialties',this)">Specialties</button>
+  <button onclick="tab('offers',this)">Offers &amp; Events</button>
+  <button onclick="tab('media',this)">Photos &amp; Reel</button>
   <button onclick="tab('marketing',this)">Marketing Kit</button>
   <button onclick="tab('flyers',this)">Flyers</button>
   <button onclick="tab('bookings',this)">Bookings</button>
@@ -124,6 +149,81 @@
       <input id="f-bookingEndpoint" placeholder="https://formsubmit.co/ajax/lightmentalhealthwellnesscare@gmail.com">
       <button class="save" onclick="saveCfg()">Save</button>
       <p class="note">Tip: for FormSubmit, use <b>https://formsubmit.co/ajax/lightmentalhealthwellnesscare@gmail.com</b> (confirm the email once). Without an endpoint, bookings still save under the Bookings tab.</p>
+    </div>
+  </div>
+
+  <!-- SERVICES & PRICES -->
+  <div class="panel" id="p-services">
+    <div class="card">
+      <h3>Services &amp; Care</h3>
+      <p class="sub">The cards shown in the “Services &amp; Care” grid. Add, edit or remove — changes show on the site after you Save.</p>
+      <div id="svcEditor"></div>
+      <button class="addbtn" onclick="svcAdd()">+ Add a service</button>
+      <div><button class="save" onclick="saveServices()">Save services</button><span id="svcMsg" class="ok" style="margin-left:14px"></span></div>
+    </div>
+    <div class="card">
+      <h3>Self‑Pay Prices &amp; Discounts</h3>
+      <p class="sub">Set your self‑pay rates. Add a discount % to show a sale price (with the original struck through) on the site.</p>
+      <div id="priceEditor"></div>
+      <button class="addbtn" onclick="priceAdd()">+ Add a price line</button>
+      <div><button class="save" onclick="savePrices()">Save prices</button><span id="priceMsg" class="ok" style="margin-left:14px"></span></div>
+    </div>
+  </div>
+
+  <!-- SPECIALTIES -->
+  <div class="panel" id="p-specialties">
+    <div class="card">
+      <h3>Specialties</h3>
+      <p class="sub">The pills in the “Specialties” section. Tick <b>Starred</b> to highlight one in gold with a ★. Add, edit, remove, or re‑star any item.</p>
+      <div id="specEditor"></div>
+      <button class="addbtn" onclick="specAdd()">+ Add a specialty</button>
+      <div class="btnrow" style="margin-bottom:4px">
+        <button onclick="specStarAll(true)">★ Star all</button>
+        <button onclick="specStarAll(false)">☆ Unstar all</button>
+      </div>
+      <div><button class="save" onclick="saveSpecs()">Save specialties</button><span id="specMsg" class="ok" style="margin-left:14px"></span></div>
+    </div>
+  </div>
+
+  <!-- OFFERS & EVENTS -->
+  <div class="panel" id="p-offers">
+    <div class="card">
+      <h3>Promotional Offers</h3>
+      <p class="sub">Promotions shown in the public “Offers &amp; Events” section. Leave both lists empty to hide that section entirely.</p>
+      <div id="promoEditor"></div>
+      <button class="addbtn" onclick="promoAdd()">+ Add an offer</button>
+      <div><button class="save" onclick="saveOffers()">Save offers &amp; events</button><span id="offerMsg" class="ok" style="margin-left:14px"></span></div>
+    </div>
+    <div class="card">
+      <h3>Events</h3>
+      <p class="sub">Upcoming events for the practice (webinars, open houses, workshops).</p>
+      <div id="eventEditor"></div>
+      <button class="addbtn" onclick="eventAdd()">+ Add an event</button>
+      <div><button class="save" onclick="saveOffers()">Save offers &amp; events</button><span id="offerMsg2" class="ok" style="margin-left:14px"></span></div>
+    </div>
+  </div>
+
+  <!-- MEDIA -->
+  <div class="panel" id="p-media">
+    <div class="card">
+      <h3>Provider Headshot</h3>
+      <p class="sub">The hero photo on the home page. Upload a new one (it’s resized &amp; saved in this browser).</p>
+      <div class="mrow">
+        <img id="headPrev" class="thumb head" alt="headshot preview">
+        <div>
+          <label class="filebtn">Choose photo<input type="file" accept="image/*" onchange="pickHead(this)"></label>
+          <div class="btnrow" style="margin-top:8px"><button onclick="resetHead()">Use default</button></div>
+          <div class="hint">Square or portrait works best. Large files are compressed automatically.</div>
+        </div>
+      </div>
+      <div style="margin-top:14px"><button class="save" onclick="saveHead()">Save headshot</button><span id="headMsg" class="ok" style="margin-left:14px"></span></div>
+    </div>
+    <div class="card">
+      <h3>Specialties Photo Reel</h3>
+      <p class="sub">The scrolling image strip in the Specialties section. Change any image or caption, add or remove tiles.</p>
+      <div id="reelEditor"></div>
+      <button class="addbtn" onclick="reelAdd()">+ Add a reel image</button>
+      <div><button class="save" onclick="saveReel()">Save reel</button><span id="reelMsg" class="ok" style="margin-left:14px"></span></div>
     </div>
   </div>
 
@@ -183,7 +283,11 @@ if(sessionStorage.getItem("light_auth")==="1")document.getElementById("gate").st
 function tab(name,btn){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
   document.getElementById("p-"+name).classList.add("active");
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
-  if(name==="bookings")renderBookings();if(name==="flyers")renderFlyers();}
+  if(name==="bookings")renderBookings();if(name==="flyers")renderFlyers();
+  if(name==="services"){renderSvcEditor();renderPriceEditor();}
+  if(name==="specialties")renderSpecEditor();
+  if(name==="offers"){renderPromoEditor();renderEventEditor();}
+  if(name==="media"){renderHeadPrev();renderReelEditor();}}
 
 /* ---------- config ---------- */
 const DEFAULTS={provider:"Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC",shortName:"Ifeoma A. Ubadike, PMHNP‑C",
@@ -218,6 +322,129 @@ loadCfg();
 function changePass(){const v=document.getElementById("f-newpass").value.trim();if(!v)return;
   localStorage.setItem("light_pass",v);document.getElementById("passMsg").textContent="✓ Passcode updated.";
   setTimeout(()=>document.getElementById("passMsg").textContent="",3000);}
+
+/* ================= CONTENT EDITORS (services, prices, specialties, offers, media) ================= */
+const DEF_ICON='<path d="M12 21C7 17 3 13 3 8.5A4.5 4.5 0 0112 6a4.5 4.5 0 019 2.5C21 13 17 17 12 21z"/>';
+const DEFAULT_SERVICES=[
+  {t:"Psychiatric Evaluation",d:"A thorough, unhurried assessment to understand your history, symptoms, and goals — the foundation of a care plan built around you.",ic:'<path d="M9 11l3 3 8-8M3 7v10a2 2 0 002 2h10"/>'},
+  {t:"Medication Management",d:"Evidence‑based prescribing and careful ongoing adjustment, with clear explanations of how and why each medication helps.",ic:'<path d="M10 3h4v4h4v4h-4v4h-4v-4H6V7h4z"/><circle cx="12" cy="18" r="3"/>'},
+  {t:"Anxiety & Depression",d:"Compassionate treatment for anxiety, depression, and mood concerns — helping you feel steady, present, and more like yourself.",ic:'<path d="M12 21C7 17 3 13 3 8.5A4.5 4.5 0 0112 6a4.5 4.5 0 019 2.5C21 13 17 17 12 21z"/>'},
+  {t:"ADHD Care",d:"Assessment and treatment for attention and focus challenges in adults and adolescents, with practical strategies for daily life.",ic:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>'},
+  {t:"Trauma & PTSD",d:"A safe, paced approach to trauma and PTSD that honors your experience and supports your nervous system's return to safety.",ic:'<path d="M12 3l7 4v5c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/>'},
+  {t:"Sleep & Wellness",d:"Help for insomnia, emotional regulation, and overall wellbeing — restoring rest and resilience so you can thrive.",ic:'<path d="M21 12.8A8 8 0 1111 3a6 6 0 0010 9.8z"/>'},
+  {t:"Weight Loss Management",d:"Supportive, medically guided weight management — thoughtful evaluation, evidence‑based options, and ongoing care that respects your whole health.",ic:'<circle cx="12" cy="13" r="8"/><path d="M12 13V9M12 5.5V3M9 3h6"/>'}
+];
+const DEFAULT_SPECS=["Narcissistic Abuse","Medication Management","Eating Disorders","ADHD","Anxiety","Bipolar Disorder","Depression","OCD","Trauma & PTSD","Sleep / Insomnia","Chronic Pain","Autism","Alcohol Use","Emotional Regulation","Stress Management","Weight Loss Management"].map(name=>({name,star:true}));
+const DEFAULT_PRICES=[{label:"Initial psychiatric evaluation",amount:150,discount:0},{label:"Follow‑up / medication visit",amount:100,discount:0}];
+const DEFAULT_REEL=[
+  {img:"assets/reel/calm.jpg",cap:"Mindfulness & calm"},{img:"assets/reel/talk.jpg",cap:"A listening ear"},
+  {img:"assets/reel/nature.jpg",cap:"Reconnecting with nature"},{img:"assets/reel/sunrise.jpg",cap:"Hope & new beginnings"},
+  {img:"assets/reel/hands.jpg",cap:"Support & connection"},{img:"assets/reel/journal.jpg",cap:"Reflection & journaling"},
+  {img:"assets/reel/yoga.jpg",cap:"Movement & balance"},{img:"assets/reel/peace.jpg",cap:"Community & belonging"},
+  {img:"assets/reel/woman.jpg",cap:"Quiet moments of peace"}
+];
+function curCfg(){try{return JSON.parse(localStorage.getItem("light_cfg")||"{}");}catch(e){return{};}}
+function writeCfg(cfg){try{localStorage.setItem("light_cfg",JSON.stringify(cfg));}catch(e){alert("Could not save — the image may be too large for this browser's storage. Try a smaller photo.");throw e;}}
+function patchCfg(obj){const c=curCfg();Object.assign(c,obj);writeCfg(c);}
+function clone(x){return JSON.parse(JSON.stringify(x));}
+function flash(id){const el=document.getElementById(id);if(!el)return;el.textContent="✓ Saved — refresh the site to see it.";setTimeout(()=>el.textContent="",3500);}
+function ehtml(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+/* ---- image compression (keeps localStorage small) ---- */
+function compressImg(file,max,q){return new Promise(res=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{
+  let{width:w,height:h}=im;if(w>max||h>max){if(w>h){h=Math.round(h*max/w);w=max;}else{w=Math.round(w*max/h);h=max;}}
+  const cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").drawImage(im,0,0,w,h);
+  res(cv.toDataURL("image/jpeg",q||.8));};im.src=fr.result;};fr.readAsDataURL(file);});}
+
+/* ---- SERVICES editor ---- */
+let SVC=[];
+function renderSvcEditor(){SVC=(curCfg().services||clone(DEFAULT_SERVICES));
+  document.getElementById("svcEditor").innerHTML=SVC.map((s,i)=>`
+   <div class="ed"><div class="top-row"><span class="lab">Service ${i+1}</span><button class="del" onclick="svcDel(${i})">Remove</button></div>
+   <div class="ed-grid rfull"><div class="f"><label>Title</label><input value="${ehtml(s.t)}" oninput="SVC[${i}].t=this.value"></div>
+   <div class="f"><label>Description</label><textarea oninput="SVC[${i}].d=this.value">${ehtml(s.d)}</textarea></div></div></div>`).join("");}
+function svcAdd(){SVC.push({t:"New Service",d:"Describe this service.",ic:DEF_ICON});renderSvcEditorKeep();}
+function svcDel(i){SVC.splice(i,1);renderSvcEditorKeep();}
+function renderSvcEditorKeep(){const cfg=curCfg();cfg.services=SVC;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderSvcEditor();}
+function saveServices(){SVC.forEach(s=>{if(!s.ic)s.ic=DEF_ICON;});patchCfg({services:SVC});flash("svcMsg");}
+
+/* ---- PRICES editor ---- */
+let PRICES=[];
+function renderPriceEditor(){PRICES=(curCfg().prices||clone(DEFAULT_PRICES));
+  document.getElementById("priceEditor").innerHTML=PRICES.map((p,i)=>`
+   <div class="ed"><div class="top-row"><span class="lab">Price ${i+1}</span><button class="del" onclick="priceDel(${i})">Remove</button></div>
+   <div class="ed-grid r3">
+     <div class="f"><label>Label</label><input value="${ehtml(p.label)}" oninput="PRICES[${i}].label=this.value"></div>
+     <div class="f"><label>Amount ($)</label><input type="number" min="0" value="${Number(p.amount)||0}" oninput="PRICES[${i}].amount=+this.value"></div>
+     <div class="f"><label>Discount (%)</label><input type="number" min="0" max="90" value="${Number(p.discount)||0}" oninput="PRICES[${i}].discount=+this.value"></div>
+   </div></div>`).join("");}
+function priceAdd(){PRICES.push({label:"New service",amount:100,discount:0});renderPriceKeep();}
+function priceDel(i){PRICES.splice(i,1);renderPriceKeep();}
+function renderPriceKeep(){const cfg=curCfg();cfg.prices=PRICES;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderPriceEditor();}
+function savePrices(){patchCfg({prices:PRICES});flash("priceMsg");}
+
+/* ---- SPECIALTIES editor ---- */
+let SPECS=[];
+function renderSpecEditor(){SPECS=(curCfg().specs||clone(DEFAULT_SPECS));
+  document.getElementById("specEditor").innerHTML=SPECS.map((s,i)=>`
+   <div class="ed"><div class="ed-grid r3" style="align-items:end">
+     <div class="f"><label>Specialty ${i+1}</label><input value="${ehtml(s.name)}" oninput="SPECS[${i}].name=this.value"></div>
+     <label class="starchk"><input type="checkbox" ${s.star?"checked":""} onchange="SPECS[${i}].star=this.checked"> ★ Starred</label>
+     <button class="del" onclick="specDel(${i})">Remove</button>
+   </div></div>`).join("");}
+function specAdd(){SPECS.push({name:"New Specialty",star:true});renderSpecKeep();}
+function specDel(i){SPECS.splice(i,1);renderSpecKeep();}
+function specStarAll(v){SPECS.forEach(s=>s.star=v);renderSpecKeep();}
+function renderSpecKeep(){const cfg=curCfg();cfg.specs=SPECS;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderSpecEditor();}
+function saveSpecs(){patchCfg({specs:SPECS});flash("specMsg");}
+
+/* ---- OFFERS + EVENTS editors ---- */
+let PROMOS=[],EVENTS=[];
+function renderPromoEditor(){PROMOS=(curCfg().promos||[]);
+  document.getElementById("promoEditor").innerHTML=PROMOS.length?PROMOS.map((p,i)=>`
+   <div class="ed"><div class="top-row"><span class="lab">Offer ${i+1}</span><button class="del" onclick="promoDel(${i})">Remove</button></div>
+   <div class="ed-grid rfull"><div class="f"><label>Title</label><input value="${ehtml(p.title)}" oninput="PROMOS[${i}].title=this.value"></div>
+   <div class="f"><label>Description</label><textarea oninput="PROMOS[${i}].body=this.value">${ehtml(p.body)}</textarea></div></div>
+   <div class="ed-grid r2"><div class="f"><label>Promo code (optional)</label><input value="${ehtml(p.code)}" oninput="PROMOS[${i}].code=this.value"></div>
+   <div class="f"><label>Ends (optional, e.g. Dec 31)</label><input value="${ehtml(p.expires)}" oninput="PROMOS[${i}].expires=this.value"></div></div></div>`).join(""):'<p class="hint">No offers yet. Add one, or leave empty to hide the public Offers section.</p>';}
+function promoAdd(){PROMOS.push({title:"New Offer",body:"",code:"",expires:""});renderPromoKeep();}
+function promoDel(i){PROMOS.splice(i,1);renderPromoKeep();}
+function renderPromoKeep(){const cfg=curCfg();cfg.promos=PROMOS;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderPromoEditor();}
+function renderEventEditor(){EVENTS=(curCfg().events||[]);
+  document.getElementById("eventEditor").innerHTML=EVENTS.length?EVENTS.map((e,i)=>`
+   <div class="ed"><div class="top-row"><span class="lab">Event ${i+1}</span><button class="del" onclick="eventDel(${i})">Remove</button></div>
+   <div class="ed-grid r2"><div class="f"><label>Title</label><input value="${ehtml(e.title)}" oninput="EVENTS[${i}].title=this.value"></div>
+   <div class="f"><label>Date</label><input type="date" value="${ehtml(e.date)}" oninput="EVENTS[${i}].date=this.value"></div></div>
+   <div class="ed-grid r2"><div class="f"><label>Time / details line (optional)</label><input value="${ehtml(e.when)}" oninput="EVENTS[${i}].when=this.value" placeholder="e.g. 6:00 PM PST · Online"></div>
+   <div class="f"><label>Description (optional)</label><input value="${ehtml(e.desc)}" oninput="EVENTS[${i}].desc=this.value"></div></div></div>`).join(""):'<p class="hint">No events yet.</p>';}
+function eventAdd(){EVENTS.push({title:"New Event",date:"",when:"",desc:""});renderEventKeep();}
+function eventDel(i){EVENTS.splice(i,1);renderEventKeep();}
+function renderEventKeep(){const cfg=curCfg();cfg.events=EVENTS;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderEventEditor();}
+function saveOffers(){const cfg=curCfg();cfg.promos=PROMOS;cfg.events=EVENTS;writeCfg(cfg);flash("offerMsg");flash("offerMsg2");}
+
+/* ---- HEADSHOT ---- */
+let HEAD=null;
+function renderHeadPrev(){const el=document.getElementById("headPrev");HEAD=curCfg().heroPhoto||null;
+  el.src=HEAD||"assets/ifeoma-ubadike-headshot.jpeg";}
+async function pickHead(input){if(!input.files||!input.files[0])return;HEAD=await compressImg(input.files[0],900,.82);document.getElementById("headPrev").src=HEAD;}
+function resetHead(){HEAD=null;document.getElementById("headPrev").src="assets/ifeoma-ubadike-headshot.jpeg";}
+function saveHead(){const cfg=curCfg();if(HEAD)cfg.heroPhoto=HEAD;else delete cfg.heroPhoto;writeCfg(cfg);flash("headMsg");}
+
+/* ---- REEL ---- */
+let REELED=[];
+function renderReelEditor(){REELED=(curCfg().reel||clone(DEFAULT_REEL));
+  document.getElementById("reelEditor").innerHTML=REELED.map((r,i)=>`
+   <div class="ed"><div class="mrow">
+     <img class="thumb" id="reelThumb${i}" src="${ehtml(r.img)}" alt="">
+     <div class="grow"><label>Caption</label><input value="${ehtml(r.cap)}" oninput="REELED[${i}].cap=this.value">
+       <div style="margin-top:8px;display:flex;gap:10px;align-items:center"><label class="filebtn">Change image<input type="file" accept="image/*" onchange="pickReel(${i},this)"></label>
+       <button class="del" onclick="reelDel(${i})">Remove</button></div></div>
+   </div></div>`).join("");}
+async function pickReel(i,input){if(!input.files||!input.files[0])return;REELED[i].img=await compressImg(input.files[0],800,.8);document.getElementById("reelThumb"+i).src=REELED[i].img;}
+function reelAdd(){REELED.push({img:"assets/reel/calm.jpg",cap:"New caption"});renderReelKeep();}
+function reelDel(i){REELED.splice(i,1);renderReelKeep();}
+function renderReelKeep(){const cfg=curCfg();cfg.reel=REELED;localStorage.setItem("light_cfg",JSON.stringify(cfg));renderReelEditor();}
+function saveReel(){patchCfg({reel:REELED});flash("reelMsg");}
 
 /* ---------- marketing ---------- */
 const MKT=[
@@ -267,23 +494,34 @@ const FLYERS=[
     <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:98px;line-height:1.03;margin:22px 0;color:${t.ink}">Telehealth<br>psychiatry,<br>statewide.</div>
     <div style="font-size:43px;color:${t.sub};line-height:1.5;max-width:16em">Private, secure video visits anywhere in California. No commute — just care.</div></div>`}
 ];
-function renderFlyers(){document.getElementById("flyerGrid").innerHTML=FLYERS.map((f,i)=>`
+// A spotlight flyer is auto-generated for every service — add a service and it gets its own flyer.
+const SVC_THEMES=[CREAM,LILAC,GOLDW];
+function slugify(s){return String(s||"flyer").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+function serviceFlyers(){const list=(curCfg().services||DEFAULT_SERVICES);
+  return list.map((s,n)=>({name:"service-"+slugify(s.t),th:SVC_THEMES[n%SVC_THEMES.length],
+    inner:(t)=>`<div style="margin:56px 0 0"><div style="font-size:28px;letter-spacing:.26em;text-transform:uppercase;color:${t.accent};font-weight:700">Now Offering</div>
+    <div style="font-family:'Cormorant Garamond';font-weight:700;font-size:92px;line-height:1.04;margin:20px 0;color:${t.ink}">${ehtml(s.t)}</div>
+    <div style="font-size:40px;line-height:1.5;color:${t.sub};max-width:17em">${ehtml(s.d)}</div>
+    <div style="margin-top:46px;font-family:'Cormorant Garamond';font-style:italic;font-size:44px;color:${t.ink}">Ifeoma A. Ubadike, PMHNP‑C, FNP‑BC</div></div>`}));}
+let FLYLIST=FLYERS.slice();
+function renderFlyers(){FLYLIST=FLYERS.concat(serviceFlyers());
+  document.getElementById("flyerGrid").innerHTML=FLYLIST.map((f,i)=>`
   <div class="flyer-wrap"><div class="flyer-scale">${flyerShell(f.inner,f.th)}</div>
   <div class="fl-btns"><button onclick="printFlyer(${i})">🖨 Print</button><button onclick="dlFlyer(${i})">⬇ Download</button><button onclick="shareFlyer(${i})">↗ Share</button></div></div>`).join("");}
-function buildFull(i){const s=document.getElementById("flyerStage");s.innerHTML=`<div id="fullFlyer" style="width:1080px;height:1350px">${flyerShell(FLYERS[i].inner,FLYERS[i].th)}</div>`;
+function buildFull(i){const s=document.getElementById("flyerStage");s.innerHTML=`<div id="fullFlyer" style="width:1080px;height:1350px">${flyerShell(FLYLIST[i].inner,FLYLIST[i].th)}</div>`;
   const el=s.querySelector(".flyer");el.style.transform="none";el.style.width="1080px";el.style.height="1350px";return el;}
 // scale:2 => 2160×2700 render — crisp on screen and sharp in print.
 async function renderCanvas(i){const el=buildFull(i);return await html2canvas(el,{width:1080,height:1350,scale:2,backgroundColor:"#ffffff",useCORS:true});}
 async function dlFlyer(i){const canvas=await renderCanvas(i);
-  const a=document.createElement("a");a.download=`light-flyer-${FLYERS[i].name}.png`;a.href=canvas.toDataURL("image/png");a.click();}
+  const a=document.createElement("a");a.download=`light-flyer-${FLYLIST[i].name}.png`;a.href=canvas.toDataURL("image/png");a.click();}
 async function shareFlyer(i){const canvas=await renderCanvas(i);
-  canvas.toBlob(async(blob)=>{const file=new File([blob],`light-flyer-${FLYERS[i].name}.png`,{type:"image/png"});
+  canvas.toBlob(async(blob)=>{const file=new File([blob],`light-flyer-${FLYLIST[i].name}.png`,{type:"image/png"});
     if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:"Light Mental Health & Wellness"});}catch(e){}}
     else{const a=document.createElement("a");a.download=file.name;a.href=canvas.toDataURL();a.click();}});}
 async function printFlyer(i){const canvas=await renderCanvas(i);const data=canvas.toDataURL("image/png");
   const w=window.open("","_blank");
   if(!w){alert("Please allow pop-ups for this site to print the flyer.");return;}
-  w.document.write('<!doctype html><html><head><title>Light flyer — '+FLYERS[i].name+'</title>'+
+  w.document.write('<!doctype html><html><head><title>Light flyer — '+FLYLIST[i].name+'</title>'+
     '<style>@page{size:auto;margin:10mm}html,body{margin:0;padding:0;background:#fff}'+
     'img{display:block;width:100%;max-width:180mm;margin:0 auto}</style></head>'+
     '<body><img src="'+data+'" onload="setTimeout(function(){window.focus();window.print();},200)"></body></html>');
