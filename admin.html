@@ -104,6 +104,10 @@
   <div class="brand"><div><div class="b1">Light <span>Mental Health &amp; Wellness</span></div><div class="b2">Provider Console</div></div></div>
   <a class="view" href="index.html" target="_blank">View site ↗</a>
 </div>
+<div id="pubBar" style="background:linear-gradient(120deg,#3d2f63,#5a4791);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+  <div style="font-size:13.5px;max-width:54ch;line-height:1.5"><b style="color:#f0d98a">Publish to make changes live.</b> Your edits save on this device as you work — click <b>Publish</b> to push everything to the live website for all visitors &amp; devices.</div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button onclick="publishLive()" style="background:linear-gradient(135deg,#e0c35e,#c19a44);color:#3a2d06;font-weight:700;border:0;border-radius:40px;padding:12px 24px;font-size:14.5px;cursor:pointer">🌐 Publish to live site</button><span id="pubMsg" style="font-size:13px;font-weight:600"></span></div>
+</div>
 <div class="tabs">
   <button class="active" onclick="tab('update',this)">Update Site</button>
   <button onclick="tab('services',this)">Services &amp; Prices</button>
@@ -270,14 +274,42 @@
 
 <div id="flyerStage"></div>
 
+<script src="assets/lmh-sync.js"></script>
 <script>
 /* ---------- auth ---------- */
 const DEFPASS="light2026";
 function getPass(){return localStorage.getItem("light_pass")||DEFPASS;}
 function unlock(){const v=document.getElementById("pass").value;
-  if(v===getPass()){document.getElementById("gate").style.display="none";sessionStorage.setItem("light_auth","1");}
+  if(v===getPass()){document.getElementById("gate").style.display="none";sessionStorage.setItem("light_auth","1");syncFromLive();}
   else{document.getElementById("gateErr").textContent="Incorrect passcode.";}}
-if(sessionStorage.getItem("light_auth")==="1")document.getElementById("gate").style.display="none";
+if(sessionStorage.getItem("light_auth")==="1"){document.getElementById("gate").style.display="none";syncFromLive();}
+
+/* ---------- cross-device publish ---------- */
+/* On entering the console, load the LIVE published config so you always edit the
+   current live site (important on a new device/browser). One-time per session. */
+function syncFromLive(){
+  if(!window.LMHSync || sessionStorage.getItem("light_synced")) return;
+  LMHSync.getConfig().then(function(c){
+    sessionStorage.setItem("light_synced","1");
+    if(c){ try{ localStorage.setItem("light_cfg", JSON.stringify(c)); location.reload(); }catch(e){} }
+  });
+}
+function setPubMsg(t,ok){var m=document.getElementById("pubMsg");if(m){m.textContent=t;m.style.color=ok?"#bdf0cf":(ok===false?"#ffd1cc":"#f0e6c0");}}
+function dataToBlob(dataUrl){return fetch(dataUrl).then(function(r){return r.blob();});}
+async function uploadData(dataUrl,name){try{var b=await dataToBlob(dataUrl);return await LMHSync.uploadPhoto(name,b);}catch(e){return null;}}
+async function publishLive(){
+  if(!window.LMHSync){alert("Publishing isn't available right now. Please try again.");return;}
+  setPubMsg("Publishing…");
+  try{
+    var cfg=curCfg();
+    /* upload any inline (data URL) images to shared storage → keep the live config small & fast */
+    if(cfg.heroPhoto && cfg.heroPhoto.indexOf("data:")===0){ var u=await uploadData(cfg.heroPhoto,"hero-"+Date.now()+".jpg"); if(u) cfg.heroPhoto=u; }
+    if(Array.isArray(cfg.reel)){ for(var i=0;i<cfg.reel.length;i++){ var r=cfg.reel[i]; if(r&&r.img&&String(r.img).indexOf("data:")===0){ var ru=await uploadData(r.img,"reel-"+i+"-"+Date.now()+".jpg"); if(ru) r.img=ru; } } }
+    try{ writeCfg(cfg); }catch(e){}   /* save the URL-based config locally too (frees browser storage) */
+    var ok=await LMHSync.setConfig(cfg);
+    setPubMsg(ok?"✓ Published! Live on the site shortly — on every device.":"Publish failed — please try again.", ok);
+  }catch(e){ setPubMsg("Publish failed: "+(e&&e.message||e), false); }
+}
 
 /* ---------- tabs ---------- */
 function tab(name,btn){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));

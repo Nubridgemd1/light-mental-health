@@ -589,6 +589,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="assets/lmh-sync.js"></script>
 <script>
 /* ---------- CONFIG (overridable from admin.html via localStorage) ---------- */
 const DEFAULTS = {
@@ -842,6 +843,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 applyCfg();
 if(location.hash.startsWith("#post-")){const n=parseInt(location.hash.replace("#post-",""))-1;if(POSTS[n])setTimeout(()=>openPost(n),300);}
+
+/* Cross-device: pull the published config from the shared store, then re-render everything. */
+if(window.LMHSync){
+  LMHSync.getConfig().then(function(c){
+    if(!c) return;
+    CFG = Object.assign(CFG, c);
+    try{ localStorage.setItem("light_cfg", JSON.stringify(CFG)); }catch(e){}
+    applyCfg(); renderServices(); renderSpecs(); renderPrices(); renderReel(); renderOffers();
+  });
+}
 </script>
 </body>
 </html>
